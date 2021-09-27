@@ -2,6 +2,20 @@
 
 "Simples" implemmentação do jogo Bomberman em Haskell para a disciplina de Programação Funcional (2020/2).
 
+Atualmente, os seguintes tipos de dados e as seguintes estruturas de dados norteam o projeto:
+
+- `data Item`: os tipos de dados válidos em uma célula (`JogadorX | JogadorY | JogadorW | JogadorZ | Grama | Patins | Arremesso | Fogo | Bomba | Parede | Pedra`); nesse implementação, só é possível quatro jogadores distintos (para mais, só adicionar mais itens de jogadores).
+
+- `data Orientacao`: orientação de jogadores e de movimentação de jogadores (norte `N`, sul `S`, leste `L` e oeste `O`).
+
+- `data Identificador`: identificadores são *tags* para os jogadores (para facilitar a chamada de funções de alterações de estado do jogo).
+
+- `type Jogador`: é o *status* do jogador em determinado estado do jogo: é uma 4-upla contendo um `Identificador`, uma dupla `(Int, Int)` com sua localização no tabuleiro, sua orientação `Orientacao` atual e sua "mochila", consistindo de uma tripla de duplas com a "quantidade" de presentes dos três tipos: `(Patins, Int)`, `(Fogo, Int)` e `(Arremesso, Int)`.
+
+- `type Celula`: uma lista de itens, `[Item]`.
+- `type Linha`: uma lista de células, `[Celula]`.
+- `type Tabuleiro`: uma lista de linhas, `[Linha]`.
+
 Atualmente, as seguintes funções (de funcionalidade prática para a execução do jogo) foram implementadas:
 
 - `celulaValida`: verifica a validade de uma célula do tabuleiro, ou seja, se não há sobreposições inválidas (por exemplo, `Parede` em cima de `Parede`), a base da pilha (da célula) válida (por `sobreposicoes`) e se a célula não possui elementos repetidos (por `unicidade`).
