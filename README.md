@@ -1,6 +1,6 @@
 # **Bomberman**
 
-"Simples" implemmentação do jogo Bomberman em Haskell para a disciplina de Programação Funcional (2020/2).
+### "Simples" implemmentação do jogo Bomberman em Haskell para a disciplina de Programação Funcional (2020/2).
 
 Atualmente, os seguintes tipos de dados e as seguintes estruturas de dados norteam o projeto:
 
