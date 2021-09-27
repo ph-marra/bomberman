@@ -42,18 +42,22 @@ Seja `t` sempre um possível tabuleiro `Tabuleiro`. Assim, aguns exemplos de tab
 
 `t = [[[Patins, Grama], [Grama], [Patins, Grama]], [[JogadorZ, JogadorW, Grama], [Bomba, Grama], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
 `criaTabuleiro t`
+
 `>>> *** Exception: Tabuleiro invalido!`, pois há dois jogadores em uma célula.
 
 `t = [[[Patins, Grama], [Grama], [Patins, Grama]], [[JogadorX, Grama], [Bomba, Bomba, Grama], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
 `criaTabuleiro t`
+
 `>>> *** Exception: Tabuleiro invalido!`, pois há duas bombas em uma célula.
 
 `t = [[[Patins, Grama], [Grama], [Patins, Parede]], [[JogadorX, Grama], [Bomba, Grama], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
 `criaTabuleiro t`
+
 `>>> *** Exception: Tabuleiro invalido!`, pois uma bomba não pode ficar em cima de uma parede.
 
 `t = [[[Patins, Grama], [Grama], [Patins, Parede]], [[JogadorX, Grama], [Grama, Patins], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
 `criaTabuleiro t`
+
 `>>> *** Exception: Tabuleiro invalido!`, pois existe uma grama que não está na base da pilha da célula.
 
 De forma análoga, sejam os seguintes exemplos tabuleiros válidos:
@@ -61,10 +65,31 @@ De forma análoga, sejam os seguintes exemplos tabuleiros válidos:
 `t = [[[Patins, Grama], [Grama], [Parede]], [[JogadorX, Grama], [Patins, Grama], [Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
 `t0 = criaTabuleiro t`
 `t0`
+
 `>>> ([[[Patins,Grama],[Grama],[Parede]],[[JogadorX,Grama],[Patins,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(2,1),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`, ou seja, uma dupla de estato de jogo `t0` com um tabuleiro válido e uma lista com um só elemento (o único jogador encontrado no tabuleiro). No caso em que não encontre jogadores, a aplicação observará que não há jogadores e finalizará o jogo por `fim'`.
 
-`t = [[[Patins, Grama], [Grama], [Parede]], [[JogadorX, Grama], [JogadorY, Grama], [Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
+`t = [[[JogadorX, Grama], [Bomba, Grama], [Parede]], [[Grama], [JogadorY, Grama], [Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
 `t0 = criaTabuleiro t`
 `t0`
-`>>> ([[[Patins,Grama],[Grama],[Parede]],[[JogadorX,Grama],[JogadorY,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(2,1),N,((Patins,1),(Fogo,1),(Arremesso,1))),(Y,(2,2),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`, um tabuleiro válido e uma lista com os dois jogadores encontrados no tabuleiro válido.
+
+`>>> ([[[JogadorX,Grama],[Bomba,Grama],[Parede]],[[Grama],[JogadorY,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(1,1),N,((Patins,1),(Fogo,1),(Arremesso,1))),(Y,(2,2),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`, um tabuleiro válido e uma lista com os dois jogadores encontrados no tabuleiro válido.
+
+Agora, modificar o tabuleiro (jogar em si, andando com os jogadores e arremessando bombas) usemos o exemplo acima `t0` (iremos mudar a direção do jogador X para o leste e tentar jogar a bomba que está na célula vizinha:
+
+`t1 = movimento t0 X L`
+`t1`
+
+`>>> ([[[JogadorX,Grama],[Bomba,Grama],[Parede]],[[Grama],[JogadorY,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(1,1),L,((Patins,1),(Fogo,1),(Arremesso,1))),(Y,(2,2),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`
+
+`t2 = arremesso t1 X L`
+`t2`
+
+`>>> ([[[JogadorX,Grama],[Bomba,Grama],[Parede]],[[Grama],[JogadorY,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(1,1),L,((Patins,1),(Fogo,1),(Arremesso,1))),(Y,(2,2),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`, não mudou a posição da bomba por causa da `Parede`.
+
+`t3 = explosao t2 1 2 1`
+`t3`
+
+`>>> ([[[Grama],[Grama],[]],[[Grama],[Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[])`, saiu explodindo tudo, matando os dois jogadores (por isso `[Jogador]` está vazia) e destruindo uma parede.
+
+
 
