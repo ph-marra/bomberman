@@ -20,11 +20,9 @@ Atualmente, os seguintes tipos de dados e as seguintes estruturas de dados norte
 
 Atualmente, as seguintes funções (de funcionalidade prática para a execução do jogo) foram implementadas:
 
-## Funções:
+## Funções Principais:
 
-- `celulaValida`: verifica a validade de uma célula do tabuleiro, ou seja, se não há sobreposições inválidas (por exemplo, `Parede` em cima de `Parede`), a base da pilha (da célula) válida (por `sobreposicoes`) e se a célula não possui elementos repetidos (por `unicidade`).
-
-- `criaTabuleiro`: dado um `Tabuleiro`, ou seja, uma `[Linha]` (ou ainda, uma matriz de células, `[[Celula]]`) cria um tabuleiro e configura os jogadores encontrados nesse tabuleiro e coloca-os em uma lista de jogadores `[Jogador]`, retornando, assim, uma dupla `(Tabuleiro, [Jogador])`, a qual será a estrutura utilizada por todas as funções principais para mudar o estado do jogo. Caso o tabuleiro não seja válido, será levantado um erro. Todos os jogadores encontrados são colocados em `[Jogador]` posicionados para `N` e com a mochila `((Patins,1),(Fogo,1),(Arremesso,1))` (modificável em `setaJogadores`).
+- `criaTabuleiro`: dado um `Tabuleiro`, ou seja, uma `[Linha]` (ou ainda, uma matriz de células, `[[Celula]]`) cria um tabuleiro e configura os jogadores encontrados nesse tabuleiro e coloca-os em uma lista de jogadores `[Jogador]`, retornando, assim, uma dupla `(Tabuleiro, [Jogador])`, a qual será a estrutura utilizada por todas as funções principais para mudar o estado do jogo. Caso o tabuleiro não seja válido (dimensões incompatíveis com o jogo ou há pelo menos uma célula inválida por `celulaValida`, ou seja, se não há sobreposições inválidas (por exemplo, `Parede` em cima de `Parede`), a base da pilha (da célula) válida (por `sobreposicoes`) e se a célula não possui elementos repetidos (por `unicidade`)), será levantado um erro. Todos os jogadores encontrados são colocados em `[Jogador]` posicionados para `N` e com a mochila `((Patins,1),(Fogo,1),(Arremesso,1))` (modificável em `setaJogadores`).
 
 - `movimento`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante de jogo), um `Identificador` e uma `Orientacao`, se for possível movimentar o jogador (ele está no tabuleiro e a célula para onde está sua `Orientacao` for válida em movimento, ou seja, for um buraco ou uma grama) referente a esse identificador, o estado do jogo será atualizado.
 
