@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
--- TIPIFICACAO DO JOGO (OK!)
+-- TIPIFICACAO DO JOGO
 
 data Item = JogadorX | JogadorY | JogadorW | JogadorZ | Grama | Patins | Arremesso | Fogo | Bomba | Parede | Pedra deriving (Eq, Show) -- Parede eh o destrutivel
 data Orientacao = N | S | L | O deriving (Eq, Show)
@@ -10,7 +10,7 @@ type Linha = [Celula]
 type Tabuleiro = [Linha]
 
 ------------------------------------------------------------------------------
--- VERIFICA VALIDADE DE UMA CELULA (OK!)
+-- VERIFICA VALIDADE DE UMA CELULA
 
 buraco :: Celula -> Bool
 buraco [] = True
@@ -45,7 +45,7 @@ celulaValida [] = True -- buraco
 celulaValida cel = unicidade cel && sobreposicoes cel
 
 ------------------------------------------------------------------------------
--- CRIACAO DE UM TABULEIRO VALIDO (OK!)
+-- CRIACAO DE UM TABULEIRO VALIDO
 
 -- CRIA SE TABULEIRO VALIDO E RETORNA LISTA DE JOGADORES
 criaTabuleiro :: Tabuleiro -> (Tabuleiro, [Jogador])
@@ -68,7 +68,7 @@ tabuleiroValido (x:xs)
    | linhaValida x = tabuleiroValido xs
    | otherwise = False
 
--- CONSIDEREI TABULEIRO VALIDO SSE QTD DE COLUNAS >= 3
+-- CONSIDEREI TABULEIRO VALIDO SSE QTD DE COLUNAS >= 3 (E TABULEIRO RETANGULAR)
 dimensaoLinhas :: Tabuleiro -> Bool
 dimensaoLinhas [x, y] = length x == length y && length x >= 3
 dimensaoLinhas (x:y:xs) = length x == length y && dimensaoLinhas (y:xs)
@@ -77,7 +77,7 @@ dimensaoLinhas (x:y:xs) = length x == length y && dimensaoLinhas (y:xs)
 dimensoesValidas :: Tabuleiro -> Bool
 dimensoesValidas tab = length tab >= 3  && dimensaoLinhas tab
 
--- BUSCA NO TABULEIRO SE HA JOGADORES E CRIA UMA LISTA DE JOGADORES (setados sem nada na mochila)
+-- BUSCA NO TABULEIRO SE HA JOGADORES E CRIA UMA LISTA DE JOGADORES (setados com 1 em cada na mochila)
 setaJogadores :: Tabuleiro -> Int -> [Jogador]
 setaJogadores [] _ = []
 setaJogadores (l:ls) vl = parcial ++ setaJogadores ls (vl + 1)
@@ -96,7 +96,7 @@ setaJogadores' (c:cs) vl vc
 ------------------------------------------------------------------------------
 -- IMPLEMENTACOES PARA JOGADOR
 
--- PEGA ITEM (JOGADOR_X,Y,W,Z) EQUIVALENTE AO IDENTIFICADOR (Identificador id=X,Y,W,Z) (OK!)
+-- PEGA ITEM (JOGADOR_X,Y,W,Z) EQUIVALENTE AO IDENTIFICADOR (Identificador id=X,Y,W,Z)
 jogadorItem :: Identificador -> Item
 jogadorItem id
    | id == X = JogadorX
@@ -174,7 +174,7 @@ buscaLinha (c:cs) vl vc
 ------------------------------------------------------------------------------
 -- IMPLEMENTACOES DE VIZINHO
 
--- (OK!) - retorna celula do vizinho e sua posicao
+-- RETORNA CELULA DO VIZINHO E SUA POSICAO
 vizinho :: Tabuleiro -> Int -> Int -> Orientacao -> (Celula, (Int, Int))
 vizinho tab l c mov
    | movimentoInvalido l c tab mov = ([], (0,0))
@@ -188,7 +188,7 @@ vizinhoValido 0 0 = False
 vizinhoValido _ _ = True
 
 ------------------------------------------------------------------------------
--- ATUALIZACAO DE TABULEIRO (MOVIMENTANDO UM JOGADOR) (OK!)
+-- ATUALIZACAO DE TABULEIRO (MOVIMENTANDO UM JOGADOR)
 
 -- ATUALIZA O STATUS DO GAME DADO A MOVIMENTACAO DE UM JOGADOR (SE JOGADOR NAO EXISTE NO TABULEIRO, VAZ NADA, OU SEJA, RETORNA O MESMO STATUS DE GAME)
 movimento :: (Tabuleiro, [Jogador]) -> Identificador -> Orientacao -> (Tabuleiro, [Jogador])
@@ -220,7 +220,7 @@ atualizaJogadoresMovimento (j@(id, p, o, m):js) jog@(nid, np, no, nm)
    | id == nid = if np == (0,0) then js else jog : js
    | otherwise = j : atualizaJogadoresMovimento js jog
 
--- VERIFICA SE EH UM MOVIMENTO (MOVIMENTANDO PRA BORDA) INVALIDO (OK!)
+-- VERIFICA SE EH UM MOVIMENTO (MOVIMENTANDO PRA BORDA) INVALIDO
 movimentoInvalido :: Int -> Int -> Tabuleiro -> Orientacao -> Bool
 movimentoInvalido l c (v:vs) mov = (l == 1 && mov == N) || (c == 1 && mov == O) || (l == qtdLinhas && mov == S) || (c == qtdColunas && mov == L)
    where
@@ -228,7 +228,7 @@ movimentoInvalido l c (v:vs) mov = (l == 1 && mov == N) || (c == 1 && mov == O) 
       qtdColunas = length v
 
 ------------------------------------------------------------------------------
--- ATUALIZACAO DE TABULEIRO (OK!)
+-- ATUALIZACAO DE TABULEIRO
 
 -- (OK!) - ATUALIZA UMA UNICA CELULA DADO LINHA E COLUNA E CELULA E RETORNA TABULEIRO
 atualizaTab :: Tabuleiro -> Int -> Int -> Celula -> Tabuleiro
@@ -254,9 +254,8 @@ atualizaColuna [] _ vc = []
 atualizaColuna (l:ls) (c:cs) vc = atualizaCelula l vc c : atualizaColuna ls cs vc
 
 ------------------------------------------------------------------------------
--- BUSCA EM TABULEIRO (OK!)
+-- BUSCA EM TABULEIRO
 
--- (OK!)
 nthColuna :: Tabuleiro -> Int -> Linha
 nthColuna [] _ = []
 nthColuna (l:ls) c = l !! (c-1) : nthColuna ls c
@@ -271,7 +270,7 @@ celula tab l c
    | otherwise = tab !! (l-1) !! (c-1)
 
 ------------------------------------------------------------------------------
--- ARREMESSO (OK!) - arremessa por cima de jogadores, presentes e buracos... se cair no buraco, cai no limbo
+-- ARREMESSO (OK!) - arremessa soh se tiver buraco ou grama como vizinhos da bomba... se cair no buraco, cai no limbo
 
 arremesso :: (Tabuleiro, [Jogador]) -> Identificador -> Orientacao -> (Tabuleiro, [Jogador])
 arremesso (tab, jogs) id orient
@@ -304,7 +303,7 @@ ultimaCelulaValida tab l c mov potencia
       (v:vs) = viz
 
 ------------------------------------------------------------------------------
--- EXPLOSAO (OK!)
+-- EXPLOSAO
 
 {-
 (1) - PARA BOMBA E NAO DESTROI = Buraco, Pedra, Bomba, chegou no final
@@ -387,7 +386,7 @@ fim' _ = False
 
 {-
 
-ESSES SAO DADO UM TABULEIRO E UM JOGADOR
+ESSES SAO DADO UM TABULEIRO E UM JOGADOR (implementacao alternativa)
 
 fim :: Tabuleiro -> Jogador -> Bool
 fim tab (id, _, _, _) = not (temJogadorX tab id)
