@@ -230,25 +230,25 @@ movimentoInvalido l c (v:vs) mov = (l == 1 && mov == N) || (c == 1 && mov == O) 
 ------------------------------------------------------------------------------
 -- ATUALIZACAO DE TABULEIRO
 
--- (OK!) - ATUALIZA UMA UNICA CELULA DADO LINHA E COLUNA E CELULA E RETORNA TABULEIRO
+-- ATUALIZA UMA UNICA CELULA DADO LINHA E COLUNA E CELULA E RETORNA TABULEIRO
 atualizaTab :: Tabuleiro -> Int -> Int -> Celula -> Tabuleiro
 atualizaTab tab l c cel = take (l-1) tab ++ [linhaAtualizada] ++ drop l tab
    where
       linhaAtualizada = atualizaCelula (tab !! (l-1)) c cel
 
--- (OK!) - ATUALIZA UMA CELULA EM UMA LINHA E RETORNA LINHA
+-- ATUALIZA UMA CELULA EM UMA LINHA E RETORNA LINHA
 atualizaCelula :: Linha -> Int -> Celula -> Linha
 atualizaCelula linha c atual
    | not (celulaValida atual) = error "atualizacao de celula invalida!"
    | otherwise = take (c-1) linha ++ [atual] ++ drop c linha
 
--- (OK!) - ATUALIZA UMA LINHA COMPLETA EM UM TABULEIRO E RETORNA TABULEIRO
+-- ATUALIZA UMA LINHA COMPLETA EM UM TABULEIRO E RETORNA TABULEIRO
 atualizaLinha :: Tabuleiro -> Linha -> Int -> Tabuleiro
 atualizaLinha tab atual l
    | linhaValida atual = take (l-1) tab ++ [atual] ++ drop l tab
    | otherwise = error "atualizacao de linha invalida!"
 
--- (OK!) - ATUALIZA UMA COLUNA COMPLETA EM UM TABULEIRO E RETORNA TABULEIRO
+-- ATUALIZA UMA COLUNA COMPLETA EM UM TABULEIRO E RETORNA TABULEIRO
 atualizaColuna :: Tabuleiro -> Linha -> Int -> Tabuleiro
 atualizaColuna [] _ vc = []
 atualizaColuna (l:ls) (c:cs) vc = atualizaCelula l vc c : atualizaColuna ls cs vc
@@ -270,7 +270,7 @@ celula tab l c
    | otherwise = tab !! (l-1) !! (c-1)
 
 ------------------------------------------------------------------------------
--- ARREMESSO (OK!) - arremessa soh se tiver buraco ou grama como vizinhos da bomba... se cair no buraco, cai no limbo
+-- ARREMESSO - arremessa soh se tiver buraco ou grama como vizinhos da bomba... se cair no buraco, cai no limbo
 
 arremesso :: (Tabuleiro, [Jogador]) -> Identificador -> Orientacao -> (Tabuleiro, [Jogador])
 arremesso (tab, jogs) id orient
