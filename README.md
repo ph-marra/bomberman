@@ -4,6 +4,8 @@
 
 Atualmente, os seguintes tipos de dados e as seguintes estruturas de dados norteam o projeto:
 
+## Estruturas:
+
 - `data Item`: os tipos de dados válidos em uma célula (`JogadorX | JogadorY | JogadorW | JogadorZ | Grama | Patins | Arremesso | Fogo | Bomba | Parede | Pedra`); nesse implementação, só é possível quatro jogadores distintos (para mais, só adicionar mais itens de jogadores).
 
 - `data Orientacao`: orientação de jogadores e de movimentação de jogadores (norte `N`, sul `S`, leste `L` e oeste `O`).
@@ -18,9 +20,11 @@ Atualmente, os seguintes tipos de dados e as seguintes estruturas de dados norte
 
 Atualmente, as seguintes funções (de funcionalidade prática para a execução do jogo) foram implementadas:
 
+## Funções:
+
 - `celulaValida`: verifica a validade de uma célula do tabuleiro, ou seja, se não há sobreposições inválidas (por exemplo, `Parede` em cima de `Parede`), a base da pilha (da célula) válida (por `sobreposicoes`) e se a célula não possui elementos repetidos (por `unicidade`).
 
-- `criaTabuleiro`: dado um `Tabuleiro`, ou seja, uma `[Linha]` (ou ainda, uma matriz de células, `[[Celula]]`) cria um tabuleiro e configura os jogadores encontrados nesse tabuleiro e coloca-os em uma lista de jogadores `[Jogador]`, retornando, assim, uma dupla `(Tabuleiro, [Jogador])`, a qual será a estrutura utilizada por todas as funções principais para mudar o estado do jogo. Caso o tabuleiro não seja válido, será levantado um erro.
+- `criaTabuleiro`: dado um `Tabuleiro`, ou seja, uma `[Linha]` (ou ainda, uma matriz de células, `[[Celula]]`) cria um tabuleiro e configura os jogadores encontrados nesse tabuleiro e coloca-os em uma lista de jogadores `[Jogador]`, retornando, assim, uma dupla `(Tabuleiro, [Jogador])`, a qual será a estrutura utilizada por todas as funções principais para mudar o estado do jogo. Caso o tabuleiro não seja válido, será levantado um erro. Todos os jogadores encontrados são colocados em `[Jogador]` posicionados para `N` e com a mochila `((Patins,1),(Fogo,1),(Arremesso,1))` (modificável em `setaJogadores`).
 
 - `movimento`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante de jogo), um `Identificador` e uma `Orientacao`, se for possível movimentar o jogador (ele está no tabuleiro e a célula para onde está sua `Orientacao` for válida em movimento, ou seja, for um buraco ou uma grama) referente a esse identificador, o estado do jogo será atualizado.
 
@@ -31,3 +35,36 @@ Atualmente, as seguintes funções (de funcionalidade prática para a execução
 - `fim`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante de jogo) e um `Identificador` de jogador, verifica se o jogo chegou ao final, ou seja, se o jogador entrado não está mais no tabuleiro (se de alguma forma ele foi morto, ou seja, caiu em algum buraco ou foi explodido por uma bomba.
 
 - `fim'`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante de jogo), verifica se não há mais jogadores no tabuleiro (para uma implementação de jogo estilo *deathmatch*).
+
+## Exemplos:
+
+Seja `t` sempre um possível tabuleiro `Tabuleiro`. Assim, aguns exemplos de tabuleiros inválidos são:
+
+`t = [[[Patins, Grama], [Grama], [Patins, Grama]], [[JogadorZ, JogadorW, Grama], [Bomba, Grama], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
+`criaTabuleiro t`
+`>>> *** Exception: Tabuleiro invalido!`, pois há dois jogadores em uma célula.
+
+`t = [[[Patins, Grama], [Grama], [Patins, Grama]], [[JogadorX, Grama], [Bomba, Bomba, Grama], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
+`criaTabuleiro t`
+`>>> *** Exception: Tabuleiro invalido!`, pois há duas bombas em uma célula.
+
+`t = [[[Patins, Grama], [Grama], [Patins, Parede]], [[JogadorX, Grama], [Bomba, Grama], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
+`criaTabuleiro t`
+`>>> *** Exception: Tabuleiro invalido!`, pois uma bomba não pode ficar em cima de uma parede.
+
+`t = [[[Patins, Grama], [Grama], [Patins, Parede]], [[JogadorX, Grama], [Grama, Patins], [Patins, Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
+`criaTabuleiro t`
+`>>> *** Exception: Tabuleiro invalido!`, pois existe uma grama que não está na base da pilha da célula.
+
+De forma análoga, sejam os seguintes exemplos tabuleiros válidos:
+
+`t = [[[Patins, Grama], [Grama], [Parede]], [[JogadorX, Grama], [Patins, Grama], [Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
+`t0 = criaTabuleiro t`
+`t0`
+`>>> ([[[Patins,Grama],[Grama],[Parede]],[[JogadorX,Grama],[Patins,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(2,1),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`, ou seja, uma dupla de estato de jogo `t0` com um tabuleiro válido e uma lista com um só elemento (o único jogador encontrado no tabuleiro). No caso em que não encontre jogadores, a aplicação observará que não há jogadores e finalizará o jogo por `fim'`.
+
+`t = [[[Patins, Grama], [Grama], [Parede]], [[JogadorX, Grama], [JogadorY, Grama], [Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]`
+`t0 = criaTabuleiro t`
+`t0`
+`>>> ([[[Patins,Grama],[Grama],[Parede]],[[JogadorX,Grama],[JogadorY,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(2,1),N,((Patins,1),(Fogo,1),(Arremesso,1))),(Y,(2,2),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`, um tabuleiro válido e uma lista com os dois jogadores encontrados no tabuleiro válido.
+
