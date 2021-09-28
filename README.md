@@ -89,5 +89,36 @@ Agora, modificar o tabuleiro (jogar em si, andando com os jogadores e arremessan
 
 `>>> ([[[Grama],[Grama],[]],[[Grama],[Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[])`, saiu explodindo tudo, matando os dois jogadores (por isso `[Jogador]` está vazia) e destruindo uma parede.
 
+## Funções Auxiliares:
 
+- `buraco`: verifica se uma célula é um buraco.
+- `unicidade`: verifica se uma célula é única (não há itens repetidos na pilha).
+- `sobreposicoes`: verifica se uma célula é válida em relação às regras de empilhamento do jogo.
+- `celula`: verifica se uma célula é válida (em relação às regras das funções acima).
+
+- `dimensoesValidas`: verifica se a dimensão do tabuleiro é válida (retangular com o tamanho das linhas e a quantidade de colunas no mínimo três).
+- `setaJogadores`: dado um tabuleiro, é uma função auxiliar de `criaTabuleiro` que cria a lista de jogadores (com seus respectivos atributos).
+- `jogadorItem`: dado um identificador, por exemplo `X`, retorna seu respectivo item (uma vez que o tabuleiro é um `[[[Item]]]`.
+- `jogadorIdentificador`: dado um item de jogador, por exemplo `JogadorX`, retorna seu respectivo identificador.
+- `jogador`: verifica se item é um jogador.
+- `temJogadorX`: verifica se, em um tabuleiro dado, há o determinado jogador (identificador) entrado.
+- `listaJogadorX`: dado uma lista de jogadores e um identificador, retorna o jogador referente ao identificador entrado caso houver; caso contrário, levanta um erro.
+- `temJogador`: dado um tabuleiro, verifica se há pelo menos um jogador nele.
+- `buscaJogadores`: dado um tabuleiro, retorna uma lista de itens de jogadores.
+- `vizinho`: dado um tabuleiro e uma posição de tabuleiro (valores da linha `l` e coluna `c`) e uma orientação `mov`, retorna uma dupla `(Celula, (Int, Int))` referente à célula do vizinho e sua posição no tabuleiro.
+- `vizinhoValido`: verifica se a posição de um vizinho é válido (por convenção, `vizinho` retorna `([], (0, 0))` caso inválido).
+- `atualizaJogadoresMovimento`: dado uma lista de jogadores e um jogador, atualiza a lista de acordo com os valores do jogador entrado (por exemplo, caso o jogador esteja "fora" do tabuleiro, ou seja, caiu no "limbo", e esteja na lista de jogadores, ele é retirado dela).
+- `movimentoInvalido`: verifica se um movimento é inválido (se é um movimento de borda, ou seja, saindo para fora do tabuleiro).
+- `atualizaTab`: dado um tabuleiro, uma posição de célula e uma célula a ser trocada, retorna o tabuleiro com a célula atualizada.
+- `atualizaCelula`: dado um tabuleiro, uma linha, uma posição de coluna e uma nova célula, atualiza-a na posição entrada e retorna o tabuleiro atualizado.
+- `atualizaLinha`: análoga à acima, atualiza uma linha completa em um tabuleiro e retorna-o.
+- `atualizaColuna`: análoga à acima, atualiza uma coluna completa em um tabuleiro e retorna-o.
+- `nthColuna`: pega a n-ésima coluna de um tabuleiro, retornando-a.
+- `nthLinha`: pega a n-ésima linha de um tabuleiro, retornando-a.
+- `celula`: pega a célula do tabuleiro referente aos valores de posição entrados, retornando-a.
+- `arremessa`: dado um tabuleiro e um jogador, com uma posição e uma orientação, arremessa uma bomba vizinha, caso exista e seja possível arremessá-la, retornando o tabuleiro atualizado.
+- `ultimaCelulaValida`: dado um tabuleiro, uma posição de tabuleiro, uma orientação e uma potência de bomba, retorna as informações da última célula válida que uma bomba poderia ser arremessada nessa direção. Nessa implementação, considerou-se que a bomba não "passa por cima" de jogadores, presentes, bombas, pedras e nem paredes (ou seja, uma implementação tradicional de um jogo de Bomberman.
+- `atualizaJogadoresExplosao`: análogo ao `atualizaJogadoresMovimento`, dado um tabuleiro e uma lista de jogadores, atualiza-a referente às informações do tabuleiro (por exemplo, se o jogador foi explodido, a função retira jogador da lista).
+- `explodeLinha`: função auxiliar do `explosao`, dado um tabuleiro, uma posição de tabuleiro e uma intensidade de bomba, explode todas as células "explodíveis" em relação à linha da bomba.
+- `explodeColuna`: análoga à acima, só que em relação à coluna.
 
