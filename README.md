@@ -91,6 +91,8 @@ Agora, modificar o tabuleiro (jogar em si, andando com os jogadores e arremessan
 
 ## Funções Auxiliares:
 
+São funções que auxiliam os processos das funções que serão acionadas no jogo. Algumas se tratam de busca em um tabuleiro, por exemplo `celula` ou `nthLinha`, outras são de avaliações lógicas, por exemplo `unicidade` ou `temJogador`, e outras são de atualização de tabuleiro, por exemplo `atualizaTab` ou `atualizaCelula`:
+
 - `buraco`: verifica se uma célula é um buraco.
 - `unicidade`: verifica se uma célula é única (não há itens repetidos na pilha).
 - `sobreposicoes`: verifica se uma célula é válida em relação às regras de empilhamento do jogo.
