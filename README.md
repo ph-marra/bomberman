@@ -96,7 +96,7 @@ São funções que auxiliam os processos das funções que serão acionadas no j
 - `buraco`: verifica se uma célula é um buraco.
 - `unicidade`: verifica se uma célula é única (não há itens repetidos na pilha).
 - `sobreposicoes`: verifica se uma célula é válida em relação às regras de empilhamento do jogo.
-- `celula`: verifica se uma célula é válida (em relação às regras das funções acima).
+- `celulaValida`: verifica se uma célula é válida (em relação às regras das funções acima).
 
 - `dimensoesValidas`: verifica se a dimensão do tabuleiro é válida (retangular com o tamanho das linhas e a quantidade de colunas no mínimo três).
 - `setaJogadores`: dado um tabuleiro, é uma função auxiliar de `criaTabuleiro` que cria a lista de jogadores (com seus respectivos atributos).
