@@ -72,7 +72,7 @@ De forma análoga, sejam os seguintes exemplos tabuleiros válidos:
 
 `>>> ([[[JogadorX,Grama],[Bomba,Grama],[Parede]],[[Grama],[JogadorY,Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[(X,(1,1),N,((Patins,1),(Fogo,1),(Arremesso,1))),(Y,(2,2),N,((Patins,1),(Fogo,1),(Arremesso,1)))])`, um tabuleiro válido e uma lista com os dois jogadores encontrados no tabuleiro válido.
 
-Agora, modificar o tabuleiro (jogar em si, andando com os jogadores e arremessando bombas) usemos o exemplo acima `t0` (iremos mudar a direção do jogador X para o leste e tentar jogar a bomba que está na célula vizinha:
+Agora, modificar o tabuleiro (jogar em si, andando com os jogadores e arremessando bombas) usemos o exemplo acima `t0` (iremos mudar a direção do jogador X para o leste e tentar jogar a bomba que está na célula vizinha):
 
 `t1 = movimento t0 X L`
 `t1`
