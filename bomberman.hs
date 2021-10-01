@@ -288,7 +288,6 @@ coloca (tab, jogs) id orient
       jog@(ident, (l, c), o, m) = listaJogadorX jogs id
       (viz, (vl, vc)) = vizinho tab l c orient
       (v:vs) = viz
-      (a:as) = celula tab l c
       novojogs = atualizaJogadores jogs (ident, (l, c), orient, m)
    
 ------------------------------------------------------------------------------
