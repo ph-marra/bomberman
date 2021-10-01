@@ -5,6 +5,7 @@ data Item = JogadorX | JogadorY | JogadorW | JogadorZ | Grama | Patins | Arremes
 data Orientacao = N | S | L | O deriving (Eq, Show)
 data Identificador = X | Y | W | Z deriving (Eq, Show)
 type Jogador = (Identificador, (Int, Int), Orientacao, ((Item, Int), (Item, Int), (Item, Int)))
+type Instante = (Tabuleiro, [Jogador])
 type Celula = [Item]
 type Linha = [Celula]
 type Tabuleiro = [Linha]
@@ -48,7 +49,7 @@ celulaValida cel = unicidade cel && sobreposicoes cel
 -- CRIACAO DE UM TABULEIRO VALIDO
 
 -- CRIA SE TABULEIRO VALIDO E RETORNA LISTA DE JOGADORES
-criaTabuleiro :: Tabuleiro -> (Tabuleiro, [Jogador])
+criaTabuleiro :: Tabuleiro -> Instante
 criaTabuleiro tab
    | validadeTabuleiro = (tab, jogadores)
    | otherwise = error "Tabuleiro invalido!"
@@ -149,6 +150,12 @@ temJogador :: Tabuleiro -> Bool
 temJogador [] = False
 temJogador (l:ls) = jogadorPresenteLinha l || temJogador ls
 
+atualizaJogadores :: [Jogador] -> Jogador -> [Jogador]
+atualizaJogadores [] _ = []
+atualizaJogadores (j@(id, p, oient, m):js) jog@(ident, px, ox, mx)
+   | id == ident = jog:js
+   | otherwise = j : atualizaJogadores js jog
+
 --------------------
 
 -- BUSCA TODOS JOGADORES DO TAB - RETORNA UMA LISTA DOS ITENS DELES
@@ -191,7 +198,7 @@ vizinhoValido _ _ = True
 -- ATUALIZACAO DE TABULEIRO (MOVIMENTANDO UM JOGADOR)
 
 -- ATUALIZA O STATUS DO GAME DADO A MOVIMENTACAO DE UM JOGADOR (SE JOGADOR NAO EXISTE NO TABULEIRO, VAZ NADA, OU SEJA, RETORNA O MESMO STATUS DE GAME)
-movimento :: (Tabuleiro, [Jogador]) -> Identificador -> Orientacao -> (Tabuleiro, [Jogador])
+movimento :: Instante -> Identificador -> Orientacao -> Instante
 movimento (tab, jogs) id orient
    | temJogadorX tab id = (novotab, atualizaJogadoresMovimento jogs novojog)
    | otherwise = (tab, jogs)
@@ -270,9 +277,24 @@ celula tab l c
    | otherwise = tab !! (l-1) !! (c-1)
 
 ------------------------------------------------------------------------------
+-- COLOCA - coloca uma bomba em uma posicao vizinha (soh pode assim pois por especificacao um jogador nao pode ficar nunca na mesma celula que uma bomba)
+
+coloca :: Instante -> Identificador -> Orientacao -> Instante
+coloca (tab, jogs) id orient
+   | not (temJogadorX tab id) || movimentoInvalido l c tab orient  || buraco viz = (tab, novojogs)
+   | v /= Grama = (tab, novojogs)
+   | otherwise = (atualizaTab tab vl vc (Bomba:viz), novojogs)
+   where
+      jog@(ident, (l, c), o, m) = listaJogadorX jogs id
+      (viz, (vl, vc)) = vizinho tab l c orient
+      (v:vs) = viz
+      (a:as) = celula tab l c
+      novojogs = atualizaJogadores jogs (ident, (l, c), orient, m)
+   
+------------------------------------------------------------------------------
 -- ARREMESSO - arremessa soh se tiver buraco ou grama como vizinhos da bomba... se cair no buraco, cai no limbo
 
-arremesso :: (Tabuleiro, [Jogador]) -> Identificador -> Orientacao -> (Tabuleiro, [Jogador])
+arremesso :: Instante -> Identificador -> Orientacao -> Instante
 arremesso (tab, jogs) id orient
    | not (temJogadorX tab id) || o /= orient = (tab, jogs)
    | otherwise = (arremessa tab jog, jogs)
@@ -315,7 +337,7 @@ ultimaCelulaValida tab l c mov potencia
 *Se bate no jogador, parar a sequenca de explosao (outro jogador pode se esconder atras de um jogador que sera explodido)
 -}
 
-explosao :: (Tabuleiro, [Jogador]) -> Int -> Int -> Int -> (Tabuleiro, [Jogador])
+explosao :: Instante -> Int -> Int -> Int -> Instante
 explosao (tab, jogs) l c intensidade = (novotab, novojogs)
    where
       novotab = explode tab l c intensidade
@@ -330,10 +352,12 @@ atualizaJogadoresExplosao tab (j@(id, _, _, _):js)
 -- ATUALIZA TABULEIRO DADO A EXPLOSAO DE UMA BOMBA (l,c) DE FORCA intensidade
 explode :: Tabuleiro -> Int -> Int -> Int -> Tabuleiro
 explode tab l c intensidade
-   | b /= Bomba = tab
+   | buraco bomba = tab
+   | b /= Bomba = if head bs == Bomba then atualizaTab explodido l c (tail bs) else tab
    | otherwise = atualizaTab explodido l c bs -- tira a bomba da celula
    where
-      (b:bs) = celula tab l c
+      bomba = celula tab l c
+      (b:bs) = bomba
       explodido = explode' tab l c intensidade
 
 explode' :: Tabuleiro -> Int -> Int -> Int -> Tabuleiro
@@ -376,11 +400,11 @@ explodeColunaOrientacional tab l c intensidade orient
 
 -- para um jogador soh (por exemplo, jogando contra maquina, os outros jogadores sao maquina)
 -- chega ao fim quando o jogador entrado nao esta mais no tabuleiro
-fim :: (Tabuleiro, [Jogador]) -> Identificador -> Bool
+fim :: Instante -> Identificador -> Bool
 fim (tab, _) id = not (temJogadorX tab id)
 
 -- deathmatch (acaba soh quando nao tem nenhum jogador no tabuleiro)
-fim' :: (Tabuleiro, [Jogador]) -> Bool 
+fim' :: Instante -> Bool 
 fim' (_, []) = True
 fim' _ = False
 
