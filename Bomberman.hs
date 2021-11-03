@@ -21,7 +21,6 @@ main = do
         case cod of
             Saiu -> putStr "Fim de jogo, pois escolheu sair!\n\n"
             Acabou -> putStr $ "Fim de jogo. Vencedor = " ++ show id ++ "!\n\n"
-        
         return ()
     where i0 = criaTabuleiro tab
 
