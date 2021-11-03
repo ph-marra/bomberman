@@ -317,7 +317,7 @@ arremessa tab (id, (l, c), orient, (_, _, (_, potencia)))
 -- valido enquanto estiver grama ou vazio
 ultimaCelulaValida :: Tabuleiro -> Int -> Int -> Orientacao -> Int -> (Celula, (Int, Int))
 ultimaCelulaValida tab l c mov potencia
-   | movimentoInvalido vl vc tab mov || potencia == 0 = (celula tab l c, (l, c))
+   | movimentoInvalido l c tab mov || potencia == 0 = (celula tab l c, (l, c))
    | buraco viz = ultimaCelulaValida tab vl vc mov (potencia-1)
    | v == Grama = ultimaCelulaValida tab vl vc mov (potencia-1)
    | otherwise = (celula tab l c, (l, c))
