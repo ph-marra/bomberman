@@ -1,3 +1,5 @@
+module Bomberman where
+
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 -- TIPIFICACAO DO JOGO
 
