@@ -11,7 +11,7 @@ clearPrompt
     | os == "darwin" || os == "linux" || os == "linux-android" = "clear"
     | otherwise = "cls"
 
-tab = [[[JogadorX, Grama], [Bomba, Grama], [Parede]], [[Grama], [JogadorY, Grama], [Grama]], [[Patins, Grama], [Parede, Grama], [Patins, Grama]]]
+tab = [[[JogadorX, Grama], [Bomba, Grama], [Parede, Grama], [Fogo, Grama], []], [[Grama], [Patins, Grama], [JogadorY, Grama], [Bomba, Grama], [Grama]], [[Arremesso, Grama], [Bomba, Grama], [Patins, Grama], [Grama], []], [[Bomba, Grama], [Grama], [Patins, Grama], [Grama], [Grama]], [[Grama], [Bomba, Grama], [], [Grama], [Pedra]]]
 
 main :: IO ()
 main = do
