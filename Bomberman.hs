@@ -404,10 +404,9 @@ explodeColunaOrientacional tab l c intensidade orient
 fim :: Instante -> Identificador -> Bool
 fim (tab, _) id = not (temJogadorX tab id)
 
--- deathmatch (acaba soh quando nao tem nenhum jogador no tabuleiro)
+-- deathmatch (acaba soh quando soh sobrou um jogador)
 fim' :: Instante -> Bool 
-fim' (_, []) = True
-fim' _ = False
+fim' (_, jogs) = length jogs == 1
 
 {-
 
