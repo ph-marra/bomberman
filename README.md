@@ -26,7 +26,7 @@ Atualmente, os seguintes tipos de dados e as seguintes estruturas de dados norte
 
 - `data Acao`: ações às quais os jogadores podem escolher (`ColocarBomba` para colocar bomba no tabuleiro, `Arremessar` para arremessar uma bomba vizinha, `Mover` para mover o jogador pelo tabuleiro e `Sair` para sair do jogo).
 
-- `data Codigo`: tipo de dado que oferece especificações para o tipo de término de jogo (`Acabou` quando o jogo é terminado pelo estilo de jogo, no caso por `fim'`, ou seja, *deathmatch*, onde acaba o jogo quando só sobra um no tabuleiro). 
+- `data Codigo`: tipo de dado que oferece especificações para o tipo de término de jogo (`Acabou` quando o jogo é terminado pelo estilo de jogo, no caso por `fim'`, ou seja, *deathmatch*, onde acaba o jogo quando só sobra um no tabuleiro, e `Saiu` quando o jogo é terminado a pedido de determinado jogador). 
 
 Atualmente, as seguintes funções (de funcionalidade prática para a execução do jogo) foram implementadas:
 
