@@ -54,8 +54,6 @@ formatacaoTabuleiro celula
     | c == Arremesso = (show c) ++ "   "
     where c = head celula
 
-
-
 actionLoop :: Instante -> IO (Codigo, Identificador)
 actionLoop ins@(t, js@((fstid, _, _, _):j)) = do
     system $ clearPrompt
