@@ -6,16 +6,21 @@ import Bomberman
 data Acao = ColocarBomba | Arremessar | Mover | Sair
     deriving (Show, Eq)
 
+data Codigo = Acabou | Saiu deriving (Show, Eq)
+
 clearPrompt :: String
 clearPrompt
     | os == "darwin" || os == "linux" || os == "linux-android" = "clear"
     | otherwise = "cls"
 
-tab = [[[JogadorX, Grama], [Bomba, Grama], [Parede, Grama], [Fogo, Grama], []], [[Grama], [Patins, Grama], [JogadorY, Grama], [Bomba, Grama], [Grama]], [[Arremesso, Grama], [Bomba, Grama], [Patins, Grama], [Grama], []], [[Bomba, Grama], [Grama], [Patins, Grama], [Grama], [Grama]], [[Grama], [Bomba, Grama], [], [Grama], [Pedra]]]
+tab = [[[JogadorX, Grama], [Bomba, Grama], [Parede, Grama], [Fogo, Grama], []], [[Grama], [Patins, Grama], [JogadorY, Grama], [Bomba, Grama], [Grama]], [[Arremesso, Grama], [Bomba, Grama], [Patins, Grama], [Grama], [Pedra]], [[Bomba, Grama], [Grama], [Patins, Grama], [Grama], [Grama]], [[Grama], [Bomba, Grama], [], [Grama], [Pedra]]]
 
 main :: IO ()
 main = do
-        actionLoop i0
+        (cod, id) <- actionLoop i0
+        case cod of
+            Saiu -> putStr "Fim de jogo, pois escolheu sair!\n\n"
+            Acabou -> putStr $ "Fim de jogo. Vencedor = " ++ show id ++ "!\n\n"
         return ()
     where i0 = criaTabuleiro tab
 
@@ -49,23 +54,24 @@ formatacaoTabuleiro celula
     | c == Arremesso = (show c) ++ "   "
     where c = head celula
 
-actionLoop :: Instante -> IO Instante
-actionLoop ins@(t, js) = do
+actionLoop :: Instante -> IO (Codigo, Identificador)
+actionLoop ins@(t, js@((fstid, _, _, _):j)) = do
     system $ clearPrompt
-    putStr "Jogador | Direcao | Patins | Fogo | Arremesso\n"
-    impressaoJogadores js
-    putStr "\n"
-    impressaoTabuleiro t
-    putStrLn "\nEntre com o identificador do jogador."
-    identidade <- pegaJogador
-    let (_, _, o, _) = listaJogadorX js identidade
-    putStrLn "Entre com o movimento a ser realizado."
-    (acao, orient) <- pegaAcao
-    case acao of
-        ColocarBomba -> actionLoop $ coloca ins identidade orient
-        Mover -> actionLoop $ movimento ins identidade orient
-        Arremessar -> actionLoop $ arremesso ins identidade o
-        Sair -> return ([], [])
+    if fim' ins then return (Acabou, fstid) else do
+        putStr "Jogador | Direcao | Patins | Fogo | Arremesso\n"
+        impressaoJogadores js
+        putStr "\n"
+        impressaoTabuleiro t
+        putStrLn "\nEntre com o identificador do jogador."
+        identidade <- pegaJogador
+        let (_, _, o, _) = listaJogadorX js identidade
+        putStrLn "Entre com o movimento a ser realizado."
+        (acao, orient) <- pegaAcao
+        case acao of
+            ColocarBomba -> actionLoop $ coloca ins identidade orient
+            Mover -> actionLoop $ movimento ins identidade orient
+            Arremessar -> actionLoop $ arremesso ins identidade o
+            Sair -> return (Saiu, X)
 
 pegaJogador :: IO Identificador
 pegaJogador =
