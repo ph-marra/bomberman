@@ -36,7 +36,7 @@ Atualmente, as seguintes funções (de funcionalidade prática para a execução
 
 - `fim`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante `Instante` de jogo) e um `Identificador` de jogador, verifica se o jogo chegou ao final, ou seja, se o jogador entrado não está mais no tabuleiro (se de alguma forma ele foi morto, ou seja, caiu em algum buraco ou foi explodido por uma bomba.
 
-- `fim'`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante `Instante` de jogo), verifica se não há mais jogadores no tabuleiro (para uma implementação de jogo estilo *deathmatch*).
+- `fim'`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante `Instante` de jogo), verifica se sobrou só um jogador no tabuleiro (para uma implementação de jogo estilo *deathmatch* - é o modo utilizado para a implementação atual, pois é a mais coerente nesse caso).
 
 ## Exemplos:
 
