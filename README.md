@@ -17,8 +17,14 @@ Atualmente, os seguintes tipos de dados e as seguintes estruturas de dados norte
 - `type Instante`: uma dupla `(Tabuleiro, [Jogador])`, é um instante válido de jogo, ou seja, consiste de uma tabuleiro válido e uma lista de jogadores referente aos jogadores presentes no tabuleiro (`criaTabuleiro` retorna o instante inicial e todas as outras funções de atualização de jogo recebem um instante, juntamente com informações adicionais, e retornam um outro instante atualizado).
 
 - `type Celula`: uma lista de itens, `[Item]`.
+
 - `type Linha`: uma lista de células, `[Celula]`.
+
 - `type Tabuleiro`: uma lista de linhas, `[Linha]`.
+
+- `data Acao`: ações às quais os jogadores podem escolher (`ColocarBomba` para colocar bomba no tabuleiro, `Arremessar` para arremessar uma bomba vizinha, `Mover` para mover o jogador pelo tabuleiro e `Sair` para sair do jogo).
+
+- `data Codigo`: tipo de dado que oferece especificações para o tipo de término de jogo (`Acabou` quando o jogo é terminado pelo estilo de jogo, no caso por `fim'`, ou seja, *deathmatch*, onde acaba o jogo quando só sobra um no tabuleiro). 
 
 Atualmente, as seguintes funções (de funcionalidade prática para a execução do jogo) foram implementadas:
 
@@ -37,6 +43,8 @@ Atualmente, as seguintes funções (de funcionalidade prática para a execução
 - `fim`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante `Instante` de jogo) e um `Identificador` de jogador, verifica se o jogo chegou ao final, ou seja, se o jogador entrado não está mais no tabuleiro (se de alguma forma ele foi morto, ou seja, caiu em algum buraco ou foi explodido por uma bomba.
 
 - `fim'`: dado uma dupla `(Tabuleiro, [Jogador])` (um instante `Instante` de jogo), verifica se sobrou só um jogador no tabuleiro (para uma implementação de jogo estilo *deathmatch* - é o modo utilizado para a implementação atual, pois é a mais coerente nesse caso).
+
+- `actionLoop`: função que fica atualizando os instantes de jogo dado as informações do tabuleiro e dado as escolhas dos jogadores; é finalizada quando o jogador escolhe acabar o jogo ou sobra só um jogador no tabuleiro.
 
 ## Exemplos:
 
@@ -93,6 +101,8 @@ Agora, modificar o tabuleiro (jogar em si, andando com os jogadores e arremessan
 
 `>>> ([[[Grama],[Grama],[]],[[Grama],[Grama],[Grama]],[[Patins,Grama],[Parede,Grama],[Patins,Grama]]],[])`, saiu explodindo tudo, matando os dois jogadores (por isso `[Jogador]` está vazia) e destruindo uma parede.
 
+
+
 ## Funções Auxiliares:
 
 São funções que auxiliam os processos das funções que serão acionadas no jogo. Algumas se tratam de busca em um tabuleiro, por exemplo `celula` ou `nthLinha`, outras são de avaliações lógicas, por exemplo `unicidade` ou `temJogador`, e outras são de atualização de tabuleiro, por exemplo `atualizaTab` ou `atualizaCelula`:
@@ -128,4 +138,8 @@ São funções que auxiliam os processos das funções que serão acionadas no j
 - `atualizaJogadoresExplosao`: análogo ao `atualizaJogadoresMovimento`, dado um tabuleiro e uma lista de jogadores, atualiza-a referente às informações do tabuleiro (por exemplo, se o jogador foi explodido, a função retira jogador da lista).
 - `explodeLinha`: função auxiliar do `explosao`, dado um tabuleiro, uma posição de tabuleiro e uma intensidade de bomba, explode todas as células "explodíveis" em relação à linha da bomba.
 - `explodeColuna`: análoga à acima, só que em relação à coluna.
+- `impressaoJogadores`: imprime os dados de todos os jogadores em uma dada lista de jogadores.
+- `impressaoTabuleiro`: dado um tabuleiro, imprime-o formatadamente.
+- `pegaJogador`: entra em loop até o usuário entrar com o `Identificador` de jogador válido.
+- `pegaAcao`: entra em loop até o usuário entrar com uma ação válida.
 
